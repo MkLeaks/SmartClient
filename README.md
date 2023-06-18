@@ -12,6 +12,9 @@ The final jar is located in build/libs
 # Where can I found json's file?
 The json file can be downloaded at https://libs.mkleaks.cc
 
+# Do you need a tutorial?
+Link: https://www.youtube.com/watch?v=D9iibzuoojo&lc=Ugx2lAG6NDM3hVwOQN14AaABAg
+
 # Copyright (C) sssssss.dev - mkleaks 2022-2023 All rights reserved
 You are not allowed to sell this for monetary profit, you are only allowed
 to use this source code if you give proper credits
