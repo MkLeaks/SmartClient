@@ -5,20 +5,12 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import de.enzaxd.viaforge.ViaForge;
-import de.enzaxd.viaforge.handler.VRDecodeHandler;
-import de.enzaxd.viaforge.handler.VREncodeHandler;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
+import de.florianmichael.viamcp.MCPVLBPipeline;
+import de.florianmichael.viamcp.ViaMCP;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelException;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
@@ -33,25 +25,9 @@ import io.netty.handler.timeout.TimeoutException;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import java.net.InetAddress;
-import java.net.SocketAddress;
-import java.util.Queue;
-import java.util.UUID;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import javax.crypto.SecretKey;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.handshake.client.C00Handshake;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.CryptManager;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.LazyLoadBase;
-import net.minecraft.util.MessageDeserializer;
-import net.minecraft.util.MessageDeserializer2;
-import net.minecraft.util.MessageSerializer;
-import net.minecraft.util.MessageSerializer2;
+import net.minecraft.util.*;
 import net.sssssssthedev.SmartClient.Main;
 import net.sssssssthedev.SmartClient.event.impl.ReceivePacketEvent;
 import net.sssssssthedev.SmartClient.event.impl.SendPacketEvent;
@@ -61,6 +37,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+
+import javax.crypto.SecretKey;
+import java.net.InetAddress;
+import java.net.SocketAddress;
+import java.util.Queue;
+import java.util.UUID;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 {
@@ -422,12 +405,11 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 
                 p_initChannel_1_.pipeline().addLast((String)"timeout", (ChannelHandler)(new ReadTimeoutHandler(30))).addLast((String)"splitter", (ChannelHandler)(new MessageDeserializer2())).addLast((String)"decoder", (ChannelHandler)(new MessageDeserializer(EnumPacketDirection.CLIENTBOUND))).addLast((String)"prepender", (ChannelHandler)(new MessageSerializer2())).addLast((String)"encoder", (ChannelHandler)(new MessageSerializer(EnumPacketDirection.SERVERBOUND))).addLast((String)"packet_handler", (ChannelHandler)networkmanager);
 
-                if (p_initChannel_1_ instanceof io.netty.channel.socket.SocketChannel && ViaForge.getInstance().getVersion() != 47) {
-                    UserConnectionImpl userConnectionImpl = new UserConnectionImpl(p_initChannel_1_, true);
-                    new ProtocolPipelineImpl(userConnectionImpl);
-                    p_initChannel_1_.pipeline()
-                            .addBefore("encoder", "via-encoder", new VREncodeHandler(userConnectionImpl))
-                            .addBefore("decoder", "via-decoder", new VRDecodeHandler(userConnectionImpl));
+                if (p_initChannel_1_ instanceof SocketChannel && ViaLoadingBase.getInstance().getTargetVersion().getVersion() != ViaMCP.NATIVE_VERSION) {
+                    final UserConnection user = new UserConnectionImpl(p_initChannel_1_, true);
+                    new ProtocolPipelineImpl(user);
+
+                    p_initChannel_1_.pipeline().addLast(new MCPVLBPipeline(user));
                 }
             }
         })).channel(oclass)).connect(p_181124_0_, p_181124_1_).syncUninterruptibly();
@@ -537,6 +519,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
                 this.channel.pipeline().remove("compress");
             }
         }
+        this.channel.pipeline().fireUserEventTriggered(new CompressionReorderEvent());
     }
 
     public void checkDisconnected()

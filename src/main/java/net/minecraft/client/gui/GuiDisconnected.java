@@ -1,17 +1,16 @@
 package net.minecraft.client.gui;
 
-import java.io.IOException;
-import java.util.List;
-
-import de.enzaxd.viaforge.ViaForge;
-import de.enzaxd.viaforge.protocols.ProtocolCollection;
+import de.florianmichael.viamcp.ViaMCP;
+import de.florianmichael.viamcp.gui.GuiProtocolSelector;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
 import net.sssssssthedev.SmartClient.Main;
-import net.sssssssthedev.SmartClient.ui.login.AltLoginThread;
 import net.sssssssthedev.SmartClient.ui.login.GuiAltLogin;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GuiDisconnected extends GuiScreen
 {
@@ -46,7 +45,7 @@ public class GuiDisconnected extends GuiScreen
         this.buttonList.clear();
         this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
         this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
-        this.buttonList.add(new GuiButton(1337, 5, 6, 98, 20, ProtocolCollection.getProtocolById(ViaForge.getInstance().getVersion()).getName()));
+        this.buttonList.add(new GuiButton(1337, 5, 6, 98, 20, "Version Switcher"));
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + 33,  "\u00a76Reconnect"));
         this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + 57, "\u00a7eAuto Reconnect"));
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
@@ -61,7 +60,7 @@ public class GuiDisconnected extends GuiScreen
         {
             this.mc.displayGuiScreen(this.parentScreen);
         } else if (button.id == 1) {
-            this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new GuiMainMenu()), this.mc, new ServerData(ViaForge.getInstance().getLastServer(), ViaForge.getInstance().getLastServer(), false)));
+            this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new GuiMainMenu()), this.mc, new ServerData(ViaMCP.INSTANCE.getLastServer(), ViaMCP.INSTANCE.getLastServer(), false)));
         } else if (button.id == 2) {
             Main.setAutoReconnect(!Main.isAutoReconnect());
             reconnectTime = System.currentTimeMillis() + 1500;
@@ -91,7 +90,7 @@ public class GuiDisconnected extends GuiScreen
         if (Main.isAutoReconnect()) {
             drawCenteredString(fontRendererObj, "Relog Time: " + (Math.max(reconnectTime - System.currentTimeMillis(), 0)) + "ms", width / 2, GuiAltLogin.username != null ? 62 : 48, -1);
             if (System.currentTimeMillis() >= reconnectTime) {
-                this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new GuiMainMenu()), this.mc, new ServerData(ViaForge.getInstance().getLastServer(), ViaForge.getInstance().getLastServer(), false)));
+                this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new GuiMainMenu()), this.mc, new ServerData(ViaMCP.INSTANCE.getLastServer(), ViaMCP.INSTANCE.getLastServer(), false)));
                 return;
             }
         }

@@ -1,10 +1,10 @@
 package net.sssssssthedev.SmartClient;
 
-
 // Copyright sssssss.dev (C) 2020-2021
 
-import de.enzaxd.viaforge.ViaForge;
+import de.florianmichael.viamcp.ViaMCP;
 import net.minecraft.util.Session;
+import net.sssssssthedev.SmartClient.annotations.modules.Module;
 import net.sssssssthedev.SmartClient.annotations.version.IVersion;
 import net.sssssssthedev.SmartClient.annotations.version.VersionInfo;
 import net.sssssssthedev.SmartClient.clickgui.ClickGUI;
@@ -12,10 +12,8 @@ import net.sssssssthedev.SmartClient.command.CommandManager;
 import net.sssssssthedev.SmartClient.event.EventManager;
 import net.sssssssthedev.SmartClient.event.EventTarget;
 import net.sssssssthedev.SmartClient.event.impl.KeyEvent;
-import net.sssssssthedev.SmartClient.annotations.modules.Module;
 import net.sssssssthedev.SmartClient.module.ModuleManager;
 import net.sssssssthedev.SmartClient.settings.SettingsManager;
-import net.sssssssthedev.SmartClient.utils.CommitHelper;
 import net.sssssssthedev.SmartClient.utils.ValueManager;
 import org.lwjgl.opengl.Display;
 
@@ -28,7 +26,7 @@ import java.util.Date;
  */
 @IVersion(
         name = "SmartClient",
-        version = "1.2.9",
+        version = "1.3.0",
         build = "Production"
 )
 public class Main extends VersionInfo {
@@ -59,10 +57,9 @@ public class Main extends VersionInfo {
         PreUUID = "";
         moduleManager = new ModuleManager();
         clickGUI = new ClickGUI();
-        ViaForge.getInstance().start();
+        ViaMCP.create();
         eventManager.register(this);
-        setCommit(CommitHelper.instance.getCommitID());
-        Display.setTitle(String.format("%s %s | %s | %s", getName(), getBuild(), getVersion(), getCommit()));
+        Display.setTitle(String.format("%s %s | %s", getName(), getBuild(), getVersion()));
         
     }
 

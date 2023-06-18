@@ -5,13 +5,11 @@ public class VersionInfo {
     public String name;
     public String version;
     public String build;
-    public String commit;
 
     public VersionInfo() {
         this.name = (getClass().getAnnotation(IVersion.class)).name();
         this.version = (getClass().getAnnotation(IVersion.class)).version();
         this.build = (getClass().getAnnotation(IVersion.class)).build();
-        this.commit = (getClass().getAnnotation(IVersion.class)).commit();
     }
 
     public void setVersion(String version) {
@@ -28,14 +26,6 @@ public class VersionInfo {
 
     public void setBuild(String build) {
         this.build = build;
-    }
-
-    public String getCommit() {
-        return this.commit;
-    }
-
-    public void setCommit(String commit) {
-        this.commit = commit;
     }
 
     public void setName(String name) {

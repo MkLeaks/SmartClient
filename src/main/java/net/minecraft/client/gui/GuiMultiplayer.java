@@ -2,11 +2,7 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import java.io.IOException;
-import java.util.List;
-
-import de.enzaxd.viaforge.ViaForge;
-import de.enzaxd.viaforge.protocols.ProtocolCollection;
+import de.florianmichael.viamcp.gui.GuiProtocolSelector;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -21,6 +17,9 @@ import net.sssssssthedev.SmartClient.utils.ColorUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 {
@@ -115,7 +114,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
         this.buttonList.add(new GuiButton(9, width / 2 - 260, height - 52, 70, 20, BungeeSpoofBtn()));
         this.buttonList.add(new GuiButton(10, width / 2 + 189, height - 52, 70, 20, ColorUtils.color + "bTools"));
         this.buttonList.add(new GuiButton(11, width / 2 + 189, height - 28, 70, 20, ColorUtils.color + "dUUID Spoof"));
-        this.buttonList.add(new GuiButton(12, 5, 6, 98, 20, ColorUtils.color + "9" + ProtocolCollection.getProtocolById(ViaForge.getInstance().getVersion()).getName()));
+        this.buttonList.add(new GuiButton(12, 5, 6, 98, 20, ColorUtils.color + "9" + "Version Switcher"));
         IpBungeeBtn = new GuiTextField(10, this.fontRendererObj, width / 2 - 258, height - 26, 66, 16);
         IpBungeeBtn.setText(Main.IpBungeeHack);
         this.selectServer(this.serverListSelector.func_148193_k());

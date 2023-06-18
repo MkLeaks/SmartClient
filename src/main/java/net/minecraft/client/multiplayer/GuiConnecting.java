@@ -5,7 +5,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.enzaxd.viaforge.ViaForge;
+import de.florianmichael.viamcp.ViaMCP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiDisconnected;
@@ -54,7 +54,7 @@ public class GuiConnecting extends GuiScreen
 
     private void connect(final String ip, final int port)
     {
-        ViaForge.getInstance().setLastServer(ip + ":" + port);
+        ViaMCP.INSTANCE.setLastServer(ip + ":" + port);
         logger.info("Connecting to " + ip + ", " + port);
         (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
         {

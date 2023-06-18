@@ -1,20 +1,17 @@
-# This is in the process of being rewriten for 1.19.
+# SmartClient (Updated)
+1.8 (1.20x switcher) Client based on alot of other clients
 
+# How to compile
+JDK 1.8 is required to compile this project
 
-# SmartClient
-1.8 Client based on alot of other clients
+1) git clone https://github.com/MkLeaks/SmartClient
+2) cd SmartClient
+3) execute ``gradlew shadowJar``
+The final jar is located in build/libs
 
-# Note before using this
-This client has some bugs and some modules are broken.
-I would recommend to use this as a base.
-Oh yeah and this was made in 2020 but i updated it
-and made it public.
+# Where can I found json's file?
+The json file can be downloaded at https://libs.mkleaks.cc
 
-# Libraries needed to run this
-Download them from here: https://www.mediafire.com/file/ct1dq7a4f745i5s/smartlibraries.rar
-
-# Copyright (C) sssssss.dev 2021-2022 All rights reserved
+# Copyright (C) sssssss.dev - mkleaks 2022-2023 All rights reserved
 You are not allowed to sell this for monetary profit, you are only allowed
 to use this source code if you give proper credits
-
-
